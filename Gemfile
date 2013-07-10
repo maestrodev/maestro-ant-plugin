@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 #dependencies
-gem 'maestro_plugin', '>=0.0.5'
+gem 'maestro_plugin', '>=0.0.7'
 gem 'maestro_shell'
 
 group :development do
