@@ -5,6 +5,7 @@ gem 'maestro_plugin', '>=0.0.7'
 gem 'maestro_shell'
 
 group :development do
+  gem 'maestro-plugin-rake-tasks'
   gem 'rake', '~>0.9.2.2'
   gem 'nokogiri'
   gem 'git'
