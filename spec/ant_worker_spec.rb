@@ -54,7 +54,6 @@ describe MaestroDev::AntWorker do
     it "should error if propertyfile not found" do
       workitem = {'fields' => {'tasks' => '',
                                'path' => '/tmp',
-                               'ant_version' => '1.8.2',
                                'propertyfile' => '/tmp/blah.ant.xml'}}
 
       subject.perform(:execute, workitem)
@@ -67,7 +66,6 @@ describe MaestroDev::AntWorker do
 
       workitem = {'fields' => {'tasks' => '',
                                'path' => '/tmp',
-                               'ant_version' => '1.8.2',
                                'propertyfile' => '/tmp/test.ant.xml'}}
 
       subject.perform(:execute, workitem)
@@ -78,45 +76,37 @@ describe MaestroDev::AntWorker do
   end
 
   describe 'execute' do
-    before :all do
+    before :each do
       @path = File.join(File.dirname(__FILE__), '..', '..')
-      @workitem =  {'fields' => {'tasks' => '',
-                                 'path' => @path,
-                                 'ant_version' => '1.8.2'}}
+      @workitem =  {'fields' => {'tasks' => '-version',
+                                 'path' => @path
+                   }}
     end
 
     it 'should run ant' do
-      workitem = {'fields' => {'tasks' => '-version',
-                               'path' => @path}}
+      subject.perform(:execute, @workitem)
 
-      subject.perform(:execute, workitem)
-
-      workitem['fields']['__error__'].should be_nil
-      workitem['__output__'].should include(ANT_VERSION)
-      workitem['__output__'].should_not include("ERROR")
+      @workitem['fields']['__error__'].should be_nil
+      @workitem['__output__'].should include(ANT_VERSION)
+      @workitem['__output__'].should_not include("ERROR")
     end
 
     it 'should add propertyfile and environment to command line' do
       pfile = File.join(File.dirname(__FILE__), '..', 'spec-data', 'ant.properties')
-      workitem = {'fields' => {'tasks' => '-version',
-                               'path' => @path,
-                               'environment' => 'HOME=/tmp',
-                               'propertyfile' => pfile}}
+      @workitem['fields']['environment'] = 'HOME=/tmp'
+      @workitem['fields']['propertyfile'] = pfile
 
-      subject.perform(:execute, workitem)
+      subject.perform(:execute, @workitem)
 
       expected = "HOME=/tmp cd #{@path}; ant -q -propertyfile #{pfile} -version"
-      workitem['fields']['command'].should eql(expected)
+      @workitem['fields']['command'].should eql(expected)
     end
 
     it 'should not add propertyfile or environment to command line' do
-      workitem = {'fields' => {'tasks' => '-version',
-                               'path' => @path}}
-
-      subject.perform(:execute, workitem)
+      subject.perform(:execute, @workitem)
 
       expected = " cd #{@path}; ant -q  -version"
-      workitem['fields']['command'].should eql(expected)
+      @workitem['fields']['command'].should eql(expected)
     end
   end
 end
