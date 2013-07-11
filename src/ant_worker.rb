@@ -9,7 +9,7 @@ module MaestroDev
   class AntWorker < Maestro::MaestroWorker
 
     def execute
-      write_output("\nANT task starting", :buffer => true)
+      write_output("\nANT task starting\n", :buffer => true)
 
       begin
         validate_parameters

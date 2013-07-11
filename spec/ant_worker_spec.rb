@@ -87,7 +87,7 @@ describe MaestroDev::AntWorker do
       subject.perform(:execute, @workitem)
 
       @workitem['fields']['__error__'].should be_nil
-      @workitem['__output__'].should include(ANT_VERSION)
+      @workitem['__output__'].should include('version ')
       @workitem['__output__'].should_not include("ERROR")
     end
 
