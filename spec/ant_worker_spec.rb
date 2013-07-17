@@ -98,14 +98,14 @@ describe MaestroDev::AntWorker do
 
       subject.perform(:execute, @workitem)
 
-      expected = "HOME=/tmp cd #{@path}; ant -q -propertyfile #{pfile} -version"
+      expected = "export HOME=/tmp && cd #{@path} && ant -q -propertyfile #{pfile} -version"
       @workitem['fields']['command'].should eql(expected)
     end
 
     it 'should not add propertyfile or environment to command line' do
       subject.perform(:execute, @workitem)
 
-      expected = " cd #{@path}; ant -q  -version"
+      expected = "cd #{@path} && ant -q  -version"
       @workitem['fields']['command'].should eql(expected)
     end
   end

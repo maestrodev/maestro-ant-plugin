@@ -18,8 +18,10 @@ module MaestroDev
         Maestro.log.debug "Using Ant version #{@ant_version}" if !@ant_version.empty?
 
         shell = Maestro::Util::Shell.new
-        shell.create_script(create_command)
+        command = create_command
+        shell.create_script(command)
 
+        write_output("\nRunning command:\n----------\n#{command.chomp}\n----------\n")
         exit_code = shell.run_script_with_delegate(self, :on_output)
 
         @error = shell.output unless exit_code.success?
@@ -30,11 +32,11 @@ module MaestroDev
         Maestro.log.warn("Error executing Ant Task: #{e.class} #{e}: " + e.backtrace.join("\n"))
       end
   
-      write_output "\n\nANT task complete"
+      write_output "\n\nANT task complete\n"
       set_error(@error) if @error
     end
 
-    def on_output(text, is_stderr)
+    def on_output(text)
       write_output(text, :buffer => true)
     end
 
@@ -63,6 +65,7 @@ module MaestroDev
       @propertyfile = get_field('propertyfile', '')
       @tasks = get_field('tasks', '')
       @environment = get_field('environment', '')
+      @env = @environment.empty? ? "" : "#{Maestro::Util::Shell::ENV_EXPORT_COMMAND} #{@environment.gsub(/(&&|[;&])\s*$/, '')} && "
 
       valid = valid_executable?
 
@@ -97,7 +100,7 @@ module MaestroDev
     def create_command
       process_tasks_field
       propertyfile_param = @propertyfile.empty? ? '' : "-propertyfile #{@propertyfile}"
-      shell_command = "#{@environment} cd #{@path}; #{@ant_executable} -q #{propertyfile_param} #{@tasks}"
+      shell_command = "#{@env}cd #{@path} && #{@ant_executable} -q #{propertyfile_param} #{@tasks}"
       set_field('command', shell_command)
       Maestro.log.debug("Running #{shell_command}")
       shell_command
