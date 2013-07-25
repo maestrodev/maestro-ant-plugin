@@ -17,7 +17,7 @@
 
 require 'spec_helper'
 
-describe MaestroDev::AntWorker do
+describe MaestroDev::Ant::AntWorker do
 
   ANT_VERSION = 'version 1.8.2'
   before(:all) do
