@@ -3,7 +3,7 @@ require 'maestro_plugin'
 require 'maestro_shell'
 
 module MaestroDev
-  module Ant
+  module AntPlugin
     class ConfigError < StandardError
     end
 
