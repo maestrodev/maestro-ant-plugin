@@ -17,7 +17,7 @@
 
 require 'spec_helper'
 
-describe MaestroDev::AntPlugin::AntWorker do
+describe MaestroDev::Plugin::AntWorker do
 
   ANT_VERSION = 'version 1.8.2'
   before(:all) do
@@ -71,7 +71,8 @@ describe MaestroDev::AntPlugin::AntWorker do
       subject.perform(:execute, workitem)
 
       # This string indicates it got as far as running Ant, which implies the config was ok
-      workitem['fields']['__error__'].should include("Buildfile: build.xml does not exist!\nBuild failed\n")
+      workitem['__output__'].should include("Buildfile: build.xml does not exist!\nBuild failed\n")
+      workitem['fields']['__error__'].should eq('Ant run failed')
     end
   end
 
