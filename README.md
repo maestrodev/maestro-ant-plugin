@@ -1,5 +1,6 @@
 maestro-ant-plugin
 ====================
+[![Code Climate](https://codeclimate.com/github/maestrodev/maestro-ant-plugin.png)](https://codeclimate.com/github/maestrodev/maestro-ant-plugin)
 
 A Maestro Plugin that provides integration with Ant
 
