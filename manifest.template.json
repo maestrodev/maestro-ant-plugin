@@ -1,4 +1,5 @@
 {
+  "image": "ant.png",
   "tasks": [{
     "name": "ant",
     "description": "Run An Ant Task",
