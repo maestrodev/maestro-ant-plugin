@@ -85,8 +85,8 @@ module MaestroDev
 
       def create_command
         process_tasks_field
-        propertyfile_param = @propertyfile.empty? ? '' : "-propertyfile #{@propertyfile}"
-        shell_command = "#{@env}cd #{@path} && #{@ant_executable} #{propertyfile_param} #{@tasks}"
+        propertyfile_param = @propertyfile.empty? ? '' : " -propertyfile #{@propertyfile}"
+        shell_command = "#{@env}cd #{@path} && #{@ant_executable}#{propertyfile_param} #{@tasks}"
         set_field('command', shell_command)
         Maestro.log.debug("Running #{shell_command}")
         shell_command
